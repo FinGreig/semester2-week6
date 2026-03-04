@@ -4,16 +4,32 @@
 
 #define PI 3.14159
 
-double rectangle_area(int height, int width) {
-  return width * height;
+double rectangle_area(double* params) {
+  return params[0] * params[1];
 }
 
-void find_circle_area(double radius) {
-  return PI * radius * radius;
+double circle_area(double* params) {
+  return PI * params[0] * params[0];
 }
 
-double triangle_area(double base, double height) {
-  printf("%f\n", 0.5 * base * height);
+double triangle_area(double* params) {
+  return 0.5 * params[0] * params[1];
+}
+
+void print_area(char* shape, double area) {
+  printf("%s Area: %.2f\n", shape, area);
+}
+
+/*
+* Pass the arguments of the program and the number of arguments for the shape area
+* Returns the type converted arguments in an array
+*/
+double* change_params(char** args, int reqargs) {
+  double* params = malloc(reqargs * sizeof(double));
+  for (int i=0;i<reqargs;i++) {
+    params[i] = atof(args[i+2]);
+  }
+  return params;
 }
 
 int main(int argc, char *argv[]) {
@@ -26,33 +42,46 @@ int main(int argc, char *argv[]) {
   }
 
   char *shape = argv[1];
+  double area = 0.0;
 
   if (strcmp(shape, "rectangle") == 0) {
     if (argc != 4) {
       printf("Error: Rectangle needs width and height.\n");
       return 1;
     }
-    double width = atof(argv[2]);
-    double height = atof(argv[3]);
-    printf("Rectangle Area: %.2f\n", rectangle_area(width, height));
+
+    double* params = change_params(argv,2);
+    area = rectangle_area(params);
+    free(params);
+    print_area(shape,area);
+
+
   } else if (strcmp(shape, "triangle") == 0) {
     if (argc != 4) {
       printf("Error: Triangle needs base and height.\n");
       return 1;
     }
-    double base = atof(argv[2]);
-    double height = atof(argv[3]);
-    printf("Triangle Area: %.2f\n", triangle_area(base, height));
+
+    double* params = change_params(argv,2);
+    area = rectangle_area(params);
+    free(params);
+    print_area(shape,area);
+
+
   } else if (strcmp(shape, "circle") == 0) {
     if (argc != 3) {
       printf("Error: Circle needs radius.\n");
       return 1;
     }
-    double radius = atof(argv[2]);
-    printf("Circle Area: %.2f\n", find_circle_area(radius));
+
+    double* params = change_params(argv,1);
+    area = rectangle_area(params);
+    free(params);
+    print_area(shape,area);
+
+
   } else {
-    printf("Error: Unknown shape '%s'. Use rectangle, triangle, or circle.\n",
-           shape);
+    printf("Error: Unknown shape '%s'. Use rectangle, triangle, or circle.\n", shape);
     return 1;
   }
 
