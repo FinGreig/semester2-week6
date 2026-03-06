@@ -38,7 +38,35 @@ void test_obvious_palindrome(void) {
  * 2. Use TEST_MSG("message") to explain what went wrong if it fails
  * ============================================================ */
 
+void test_single(void) {
+    TEST_CHECK(is_palindrome("a")==1);
+    TEST_MSG("Expect 'a' to be a palindrome");
+}
 
+void test_empty(void) {
+    TEST_CHECK(is_palindrome("")==1);
+    TEST_MSG("Expect '' to be a palindrome");
+}
+
+void test_false(void) {
+    TEST_CHECK(is_palindrome("hi")==0);
+    TEST_MSG("Expect 'hi' to be a non-palindrome");
+}
+
+void test_even_len(void) {
+    TEST_CHECK(is_palindrome(".--.")==1);
+    TEST_MSG("Expect '.--.' to be a palindrome");
+}
+
+void test_Capitalisation(void) {
+    TEST_CHECK(is_palindrome("Deed")==0);
+    TEST_MSG("Expect 'Deed' to be a non-palindrome");
+}
+
+void test_spaces(void) {
+    TEST_CHECK(is_palindrome("aaaa aaaa ")==0);
+    TEST_MSG("Expect 'aaaa aaaa ' to be a non-palindrome");
+}
 
 /* ============================================================
  * TEST_LIST - Register all your tests here
@@ -52,6 +80,12 @@ TEST_LIST = {
      * { "single character", test_single_char },
      * { "empty string", test_empty_string },
      */
+    {"single char",test_single},
+    {"empty str",test_empty},
+    {"non-palindrome (hi)",test_false},
+    {"even-length palindrome (.--.)",test_even_len},
+    {"Capitalised palindrome (Deed)",test_Capitalisation},
+    {"palindrome with added spaces (aaaa aaaa )",test_spaces},
     { NULL, NULL }
 };
 
